@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cáo Học Toán</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{
+    --bg:#FFF9EE;
+    --surface:#FFFFFF;
+    --surface-2:#FFF2DD;
+    --ink:#26324A;
+    --ink-soft:#6B7590;
+    --primary:#FF6F59;
+    --primary-ink:#FFFFFF;
+    --secondary:#3DA5D9;
+    --success:#3FAE63;
+    --success-bg:#E4F7E9;
+    --danger:#E8555A;
+    --danger-bg:#FDE7E7;
+    --gold:#F2A93B;
+    --border:rgba(38,50,74,0.12);
+    --shadow:0 10px 24px rgba(38,50,74,0.10);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171B26;
+      --surface:#212739;
+      --surface-2:#2A3145;
+      --ink:#F1EFE8;
+      --ink-soft:#AEB6CC;
+      --primary:#FF8368;
+      --primary-ink:#1B1420;
+      --secondary:#6FC1EE;
+      --success:#63D98A;
+      --success-bg:#1E3A2A;
+      --danger:#FF7A7F;
+      --danger-bg:#3D2226;
+      --gold:#FFC96B;
+      --border:rgba(255,255,255,0.14);
+      --shadow:0 10px 24px rgba(0,0,0,0.35);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171B26;
+    --surface:#212739;
+    --surface-2:#2A3145;
+    --ink:#F1EFE8;
+    --ink-soft:#AEB6CC;
+    --primary:#FF8368;
+    --primary-ink:#1B1420;
+    --secondary:#6FC1EE;
+    --success:#63D98A;
+    --success-bg:#1E3A2A;
+    --danger:#FF7A7F;
+    --danger-bg:#3D2226;
+    --gold:#FFC96B;
+    --border:rgba(255,255,255,0.14);
+    --shadow:0 10px 24px rgba(0,0,0,0.35);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Nunito',system-ui,sans-serif;
+    padding-inline:16px;
+    padding-block:20px;
+  }
+  .app{
+    max-width:640px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  /* Header */
+  header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .mascot{ width:64px; height:64px; flex:none; }
+  .titles h1{
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.5rem;
+    font-weight:800;
+    margin:0;
+    color:var(--primary);
+    text-wrap:balance;
+  }
+  .titles p{
+    margin:2px 0 0;
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    font-weight:700;
+  }
+
+  /* Nav tabs */
+  .modes{
+    display:flex;
+    gap:8px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:5px;
+    box-shadow:var(--shadow);
+  }
+  .modes button{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    font-family:'Baloo 2',sans-serif;
+    font-size:0.9rem;
+    font-weight:700;
+    padding:9px 4px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .modes button.active{
+    background:var(--primary);
+    color:var(--primary-ink);
+  }
+
+  /* Chip selector */
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .chip{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    border:2px solid var(--border);
+    background:var(--surface);
+    color:var(--ink);
+    cursor:pointer;
+    transition:transform .15s, border-color .15s, background .15s, color .15s;
+  }
+  .chip:hover{ transform:translateY(-2px); }
+  .chip.selected{
+    color:#fff;
+    border-color:transparent;
+  }
+  .chip.chip-all{
+    width:auto;
+    border-radius:16px;
+    padding:0 14px;
+    font-size:0.95rem;
+  }
+  .op-chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .op-chip{
+    flex:1 1 auto;
+    min-width:84px;
+    padding:9px 8px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    cursor:pointer;
+    transition:background .15s, border-color .15s, color .15s;
+  }
+  .op-chip.active{
+    background:var(--secondary);
+    border-color:var(--secondary);
+    color:#fff;
+  }
+  .level-chip{
+    padding:8px 14px;
+    border-radius:16px;
+    border:2px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+    cursor:pointer;
+    font-variant-numeric:tabular-nums;
+    transition:background .15s, border-color .15s, color .15s;
+  }
+  .level-chip.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#3A2A00;
+  }
+  .hint{
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    font-weight:700;
+    margin:-6px 0 0;
+  }
+
+  /* Card */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow);
+  }
+
+  /* Learn view */
+  .op-toggle{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .op-toggle button{
+    flex:1;
+    padding:9px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .op-toggle button.active{
+    background:var(--secondary);
+    border-color:var(--secondary);
+    color:#fff;
+  }
+  .table-heading{
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.15rem;
+    font-weight:800;
+    text-align:center;
+    margin:0 0 10px;
+  }
+  .table-heading .n{ color:var(--primary); }
+  .table-grid{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .table-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:8px 12px;
+    border-radius:10px;
+    background:var(--surface-2);
+    font-variant-numeric:tabular-nums;
+    font-weight:800;
+    font-size:1rem;
+  }
+  .table-row span.eq{ color:var(--ink-soft); font-weight:700; margin:0 4px;}
+  .table-row span.res{ color:var(--secondary); }
+
+  /* Quiz */
+  .progress{
+    display:flex;
+    gap:5px;
+    margin-bottom:14px;
+  }
+  .dot{
+    flex:1;
+    height:7px;
+    border-radius:4px;
+    background:var(--surface-2);
+  }
+  .dot.done{ background:var(--success); }
+  .dot.miss{ background:var(--danger); }
+  .scoreboard{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .scoreboard b{ color:var(--ink); }
+  .question{
+    font-family:'Baloo 2',sans-serif;
+    font-size:2.4rem;
+    font-weight:800;
+    text-align:center;
+    padding:22px 8px;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .answer-btn{
+    padding:16px 8px;
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.4rem;
+    font-weight:800;
+    border-radius:14px;
+    border:2px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    cursor:pointer;
+    font-variant-numeric:tabular-nums;
+    transition:transform .1s;
+  }
+  .answer-btn:active{ transform:scale(0.97); }
+  .answer-btn:disabled{ cursor:default; }
+  .answer-btn.correct{
+    background:var(--success-bg);
+    border-color:var(--success);
+    color:var(--success);
+  }
+  .answer-btn.wrong{
+    background:var(--danger-bg);
+    border-color:var(--danger);
+    color:var(--danger);
+  }
+
+  .feedback-banner{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:2px;
+    padding:10px 12px;
+    border-radius:14px;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:1.02rem;
+    text-align:center;
+  }
+  .feedback-banner .fb-icon{
+    font-size:1.6rem;
+    animation:fbBounce .6s ease;
+  }
+  .feedback-banner.correct{
+    background:var(--success-bg);
+    color:var(--success);
+  }
+  .feedback-banner.wrong{
+    background:var(--danger-bg);
+    color:var(--danger);
+  }
+  @keyframes fbBounce{
+    0%{ transform:translateY(0) scale(0.6); opacity:0; }
+    50%{ transform:translateY(-6px) scale(1.15); opacity:1; }
+    100%{ transform:translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .feedback-banner .fb-icon{ animation:none; }
+  }
+
+  .result{
+    text-align:center;
+    padding:8px 0 4px;
+  }
+  .result .stars{
+    font-size:3.4rem;
+    margin-bottom:4px;
+    display:inline-block;
+  }
+  .result .stars.trophy-pop{ animation:trophyPop .55s ease; }
+  @keyframes trophyPop{
+    0%{ transform:scale(0.3) rotate(-18deg); opacity:0; }
+    60%{ transform:scale(1.15) rotate(6deg); opacity:1; }
+    100%{ transform:scale(1) rotate(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .result .stars.trophy-pop{ animation:none; }
+  }
+  .result h2{
+    font-family:'Baloo 2',sans-serif;
+    font-size:1.5rem;
+    margin:4px 0;
+  }
+  .result p{ color:var(--ink-soft); font-weight:700; margin:0 0 16px;}
+  .best{
+    font-size:0.85rem;
+    color:var(--gold);
+    font-weight:800;
+    margin-bottom:16px;
+  }
+  .btn-row{ display:flex; gap:10px; }
+  .btn{
+    flex:1;
+    padding:13px;
+    border-radius:14px;
+    border:none;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    cursor:pointer;
+  }
+  .btn.primary{ background:var(--primary); color:var(--primary-ink); }
+  .btn.ghost{ background:var(--surface-2); color:var(--ink); }
+
+  /* Flashcards */
+  .flash-progress{
+    text-align:center;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+    font-variant-numeric:tabular-nums;
+  }
+  .flash-stage{
+    perspective:1200px;
+    margin-bottom:16px;
+  }
+  .flash-card{
+    position:relative;
+    height:180px;
+    cursor:pointer;
+  }
+  .flash-card-inner{
+    position:absolute;
+    inset:0;
+    transition:transform .5s;
+    transform-style:preserve-3d;
+  }
+  .flash-card.flipped .flash-card-inner{ transform:rotateY(180deg); }
+  @media (prefers-reduced-motion: reduce){
+    .flash-card-inner{ transition:none; }
+  }
+  .flash-face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:6px;
+    font-family:'Baloo 2',sans-serif;
+    border:2px solid var(--border);
+    padding:12px;
+    text-align:center;
+  }
+  .flash-front{
+    background:var(--surface-2);
+    font-size:2.1rem;
+    font-weight:800;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .flash-front small{
+    font-family:'Nunito',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--ink-soft);
+  }
+  .flash-back{
+    background:var(--success-bg);
+    color:var(--success);
+    font-size:2.6rem;
+    font-weight:800;
+    transform:rotateY(180deg);
+    font-variant-numeric:tabular-nums;
+  }
+  .flash-controls{
+    display:flex;
+    gap:8px;
+  }
+  .flash-controls .btn{ flex:1; }
+
+  /* Matching game */
+  .match-status{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+  .match-status b{ color:var(--ink); }
+  .match-columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .match-col-label{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .match-col{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .match-card{
+    padding:12px 8px;
+    border-radius:12px;
+    border:2px solid var(--border);
+    background:var(--surface-2);
+    color:var(--ink);
+    font-family:'Baloo 2',sans-serif;
+    font-weight:800;
+    font-size:1.02rem;
+    text-align:center;
+    cursor:pointer;
+    font-variant-numeric:tabular-nums;
+    transition:transform .1s, border-color .15s;
+  }
+  .match-card:active{ transform:scale(0.97); }
+  .match-card.selected{
+    border-color:var(--secondary);
+    color:var(--secondary);
+    box-shadow:inset 0 0 0 1px var(--secondary);
+  }
+  .match-card.matched{
+    background:var(--success-bg);
+    border-color:var(--success);
+    color:var(--success);
+    cursor:default;
+    opacity:0.75;
+  }
+  .match-card.wrong{
+    background:var(--danger-bg);
+    border-color:var(--danger);
+    color:var(--danger);
+    animation:matchShake .35s;
+  }
+  @keyframes matchShake{
+    20%,80%{ transform:translateX(-3px); }
+    40%,60%{ transform:translateX(3px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .match-card.wrong{ animation:none; }
+  }
+
+  [hidden]{ display:none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <svg class="mascot" viewBox="0 0 64 64" aria-hidden="true">
+      <polygon points="10,22 20,4 28,20" fill="#FF8F5E"/>
+      <polygon points="54,22 44,4 36,20" fill="#FF8F5E"/>
+      <polygon points="14,20 20,10 24,20" fill="#FFD9C4"/>
+      <polygon points="50,20 44,10 40,20" fill="#FFD9C4"/>
+      <ellipse cx="32" cy="34" rx="22" ry="19" fill="#FF6F59"/>
+      <ellipse cx="32" cy="40" rx="12" ry="10" fill="#FFF3EA"/>
+      <circle cx="24" cy="30" r="4.2" fill="#26324A"/>
+      <circle cx="40" cy="30" r="4.2" fill="#26324A"/>
+      <circle cx="25.2" cy="28.6" r="1.1" fill="#fff"/>
+      <circle cx="41.2" cy="28.6" r="1.1" fill="#fff"/>
+      <polygon points="32,38 28,44 36,44" fill="#26324A"/>
+    </svg>
+    <div class="titles">
+      <h1>Cáo Học Toán</h1>
+      <p>Học và luyện bảng cửu chương nhân, chia</p>
+    </div>
+  </header>
+
+  <nav class="modes" role="tablist">
+    <button id="tabLearn" class="active">📖 Học</button>
+    <button id="tabFlash">🃏 Thẻ nhớ</button>
+    <button id="tabMatch">🔗 Nối</button>
+    <button id="tabQuiz">🎯 Luyện tập</button>
+  </nav>
+
+  <!-- LEARN VIEW -->
+  <section id="learnView">
+    <p class="hint">Chọn một số để xem bảng cửu chương</p>
+    <div class="chip-row" id="learnChips"></div>
+    <p class="hint" id="learnLevelHint" hidden style="margin-top:10px;">Chọn cấp độ (phạm vi số)</p>
+    <div class="chip-row" id="learnLevelChips" hidden></div>
+    <div class="card">
+      <div class="op-chip-row" id="learnOpChips"></div>
+      <p class="table-heading" style="margin-top:12px;">Bảng số <span class="n" id="learnHeadingN">2</span></p>
+      <div class="table-grid" id="tableGrid"></div>
+    </div>
+  </section>
+
+  <!-- FLASHCARD VIEW -->
+  <section id="flashView" hidden>
+    <p class="hint">Chọn dạng phép tính</p>
+    <div class="op-chip-row" id="flashOpChips"></div>
+    <p class="hint" id="flashChipsHint" style="margin-top:10px;">Chọn một số rồi bấm vào thẻ để lật xem đáp án</p>
+    <div class="chip-row" id="flashChips"></div>
+    <p class="hint" id="flashLevelHint" hidden style="margin-top:10px;">Chọn cấp độ (phạm vi số)</p>
+    <div class="chip-row" id="flashLevelChips" hidden></div>
+    <div class="card">
+      <p class="flash-progress" id="flashProgress">Thẻ 1/10</p>
+      <div class="flash-stage">
+        <div class="flash-card" id="flashCard">
+          <div class="flash-card-inner">
+            <div class="flash-face flash-front" id="flashFront"></div>
+            <div class="flash-face flash-back" id="flashBack"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flash-controls">
+        <button class="btn ghost" id="flashPrevBtn">⬅ Trước</button>
+        <button class="btn ghost" id="flashShuffleBtn">🔀 Xáo bài</button>
+        <button class="btn primary" id="flashNextBtn">Tiếp ➡</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATCHING GAME VIEW -->
+  <section id="matchView" hidden>
+    <div id="matchSetup">
+      <p class="hint">Chọn dạng phép tính muốn luyện (chọn 1 hoặc nhiều)</p>
+      <div class="op-chip-row" id="matchOpChips"></div>
+      <p class="hint" id="matchChipsHint" style="margin-top:10px;">Chọn 1 hoặc vài số muốn luyện (phép nhân, chia), hoặc bấm "Tất cả"</p>
+      <div class="chip-row" id="matchChips"></div>
+      <p class="hint" id="matchLevelHint" hidden style="margin-top:10px;">Chọn cấp độ (phạm vi số, áp dụng cho phép cộng/trừ)</p>
+      <div class="chip-row" id="matchLevelChips" hidden></div>
+      <div class="card" style="margin-top:14px;">
+        <p style="margin:0 0 12px;font-weight:800;">Nối mỗi phép tính bên trái với đáp án đúng bên phải. Chạm 1 thẻ, rồi chạm thẻ còn lại để nối!</p>
+        <p class="hint" id="matchEmptyHint" hidden style="color:var(--danger);">Bạn nhỏ chọn ít nhất 1 số để bắt đầu nhé!</p>
+        <div class="btn-row">
+          <button class="btn primary" id="startMatchBtn">🚀 Bắt đầu</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="matchPlay" hidden>
+      <div class="card">
+        <div class="match-status">
+          <span>Đã nối: <b id="matchDoneVal">0</b>/10</span>
+          <span>Lỗi: <b id="matchMissVal">0</b></span>
+        </div>
+        <div class="match-columns">
+          <div>
+            <p class="match-col-label">Phép tính</p>
+            <div class="match-col" id="matchLeftCol"></div>
+          </div>
+          <div>
+            <p class="match-col-label">Đáp án</p>
+            <div class="match-col" id="matchRightCol"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="matchResult" hidden>
+      <div class="card result">
+        <div class="stars" id="matchResultTrophy"></div>
+        <h2 id="matchResultTitle">Tuyệt vời!</h2>
+        <p id="matchResultDesc">Bạn nhỏ đã nối đúng 10/10 cặp</p>
+        <div class="btn-row">
+          <button class="btn ghost" id="matchBackBtn">📖 Về trang học</button>
+          <button class="btn primary" id="matchRetryBtn">🔁 Chơi lại</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ VIEW -->
+  <section id="quizView" hidden>
+    <div id="quizSetup">
+      <p class="hint">Chọn dạng phép tính muốn luyện (chọn 1 hoặc nhiều)</p>
+      <div class="op-chip-row" id="quizOpChips"></div>
+      <p class="hint" id="quizChipsHint" style="margin-top:10px;">Chọn 1 hoặc vài số muốn luyện (phép nhân, chia), hoặc bấm "Tất cả"</p>
+      <div class="chip-row" id="quizChips"></div>
+      <p class="hint" id="quizLevelHint" hidden style="margin-top:10px;">Chọn cấp độ (phạm vi số, áp dụng cho phép cộng/trừ)</p>
+      <div class="chip-row" id="quizLevelChips" hidden></div>
+      <div class="card" style="margin-top:14px;">
+        <p style="margin:0 0 12px;font-weight:800;">Mỗi vòng có 10 câu hỏi, chọn đáp án đúng thật nhanh nhé!</p>
+        <p class="hint" id="quizEmptyHint" hidden style="color:var(--danger);">Bạn nhỏ chọn ít nhất 1 số để bắt đầu nhé!</p>
+        <div class="btn-row">
+          <button class="btn primary" id="startQuizBtn">🚀 Bắt đầu</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="quizPlay" hidden>
+      <div class="card">
+        <div class="progress" id="progressDots"></div>
+        <div class="scoreboard">
+          <span>Điểm: <b id="scoreVal">0</b>/10</span>
+          <span>🔥 Chuỗi đúng: <b id="streakVal">0</b></span>
+          <span>Lỗi: <b id="quizMissVal">0</b></span>
+        </div>
+        <div class="question" id="questionText">?</div>
+        <div class="answers" id="answersGrid"></div>
+        <div class="feedback-banner" id="feedbackBanner" hidden>
+          <span class="fb-icon" id="fbIcon">🎉</span>
+          <span id="fbText">Bạn nhỏ giỏi quá!</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="quizResult" hidden>
+      <div class="card result">
+        <div class="stars" id="resultStars"></div>
+        <h2 id="resultTitle">Tuyệt vời!</h2>
+        <p id="resultDesc">Bạn nhỏ trả lời đúng 0/10 câu</p>
+        <p class="best" id="bestLine"></p>
+        <div class="btn-row">
+          <button class="btn ghost" id="backLearnBtn">📖 Về trang học</button>
+          <button class="btn primary" id="retryBtn">🔁 Chơi lại</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CHIP_COLORS = ["#FF6F59","#3DA5D9","#F2A93B","#3FAE63","#B15CDB","#FF8FB0","#4FBFB0","#8C7BFF"];
+  var NUMBERS = [2,3,4,5,6,7,8,9];
+  var OPS = [
+    {key:'mul', label:'✖️ Nhân'},
+    {key:'div', label:'➗ Chia'},
+    {key:'add', label:'➕ Cộng'},
+    {key:'sub', label:'➖ Trừ'}
+  ];
+  var OP_TABLE = {mul:1, div:1}; // ops that use the 2-9 table chips
+  var LEVELS = [10,20,30,50,100,1000];
+
+  function chipColor(n){ return CHIP_COLORS[(n-2) % CHIP_COLORS.length]; }
+  function opsUseTable(opsArr){ return opsArr.some(function(o){ return o==='mul'||o==='div'; }); }
+  function opsUseLevel(){ return true; } // level now applies to every operation
+
+  // ---------- state ----------
+  var state = {
+    mode:'learn',
+    learnN:2,
+    learnOp:'mul',
+    quizSel:[2],
+    quizOps:['mul','div'],
+    matchSel:[2],
+    matchOps:['mul','div'],
+    flashN:2,
+    flashOp:'mul',
+    level:10,
+  };
+
+  var flash = { cards:[], pos:0, flipped:false };
+
+  var quiz = null; // active quiz session
+
+  // ---------- sound engine (synthesized, no external files) ----------
+  var audioCtx=null;
+  function ensureAudio(){
+    try{
+      if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+      if(audioCtx.state==='suspended'){ audioCtx.resume().catch(function(){}); }
+      return audioCtx;
+    }catch(e){ return null; }
+  }
+  function playTone(freq, start, dur, type, peak){
+    var ctx=ensureAudio(); if(!ctx) return;
+    var osc=ctx.createOscillator();
+    var gain=ctx.createGain();
+    osc.type=type||'sine';
+    osc.frequency.value=freq;
+    var t0=ctx.currentTime+start;
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.linearRampToValueAtTime(peak||0.2, t0+0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0+dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0+dur+0.05);
+  }
+  function playClap(startOffset){
+    var ctx=ensureAudio(); if(!ctx) return;
+    var size=Math.floor(ctx.sampleRate*0.08);
+    var buffer=ctx.createBuffer(1,size,ctx.sampleRate);
+    var data=buffer.getChannelData(0);
+    for(var i=0;i<size;i++){ data[i]=(Math.random()*2-1)*Math.pow(1-i/size,2); }
+    var noise=ctx.createBufferSource();
+    noise.buffer=buffer;
+    var band=ctx.createBiquadFilter();
+    band.type='bandpass';
+    band.frequency.value=1500;
+    band.Q.value=0.7;
+    var gain=ctx.createGain();
+    var t0=ctx.currentTime+startOffset;
+    gain.gain.setValueAtTime(0.5,t0);
+    gain.gain.exponentialRampToValueAtTime(0.001,t0+0.09);
+    noise.connect(band).connect(gain).connect(ctx.destination);
+    noise.start(t0);
+    noise.stop(t0+0.1);
+  }
+  function playCorrectSound(){
+    playClap(0); playClap(0.12); playClap(0.24);
+    playTone(523.25,0.36,0.18,'triangle',0.16);
+    playTone(659.25,0.48,0.18,'triangle',0.16);
+    playTone(783.99,0.6,0.28,'triangle',0.18);
+  }
+  function playWrongSound(){
+    playTone(392.0,0,0.22,'sine',0.12);
+    playTone(311.13,0.16,0.32,'sine',0.1);
+  }
+  function playTrophySound(tier){
+    if(tier==='gold'){
+      playTone(523.25,0,0.15,'triangle',0.18);
+      playTone(659.25,0.15,0.15,'triangle',0.18);
+      playTone(783.99,0.3,0.15,'triangle',0.18);
+      playTone(1046.5,0.45,0.35,'triangle',0.22);
+    } else if(tier==='silver'){
+      playTone(659.25,0,0.18,'triangle',0.16);
+      playTone(880,0.18,0.32,'triangle',0.18);
+    } else if(tier==='bronze'){
+      playTone(523.25,0,0.18,'triangle',0.15);
+      playTone(659.25,0.18,0.3,'triangle',0.16);
+    } else {
+      playTone(440,0,0.2,'sine',0.12);
+      playTone(392,0.2,0.28,'sine',0.1);
+    }
+  }
+
+  var CORRECT_ICONS=['🎉','👏','✨','🥳','🌟'];
+  var CORRECT_PHRASES=['Bạn nhỏ giỏi quá!','Chính xác rồi!','Xuất sắc luôn!','Tuyệt vời ông mặt trời!','Đúng rồi, giỏi ghê!'];
+  var WRONG_ICONS=['💪','🌈','🤗','🌻'];
+  var WRONG_PHRASES=['Cố lên bạn nhỏ ơi, sắp đúng rồi!','Không sao đâu, thử lại nhé!','Bạn nhỏ làm tốt lắm, tiếp tục nào!','Gần đúng rồi, cố thêm chút nữa!'];
+
+  // ---------- storage (per-viewer convenience only) ----------
+  function getBestMistakes(){
+    try{
+      var v = localStorage.getItem('caohoctoan_best_mistakes');
+      return v!==null ? parseInt(v,10) : null;
+    }catch(e){ return null; }
+  }
+  function setBestMistakes(v){
+    try{ localStorage.setItem('caohoctoan_best_mistakes', String(v)); }catch(e){}
+  }
+
+  // ---------- element refs ----------
+  var tabLearn = document.getElementById('tabLearn');
+  var tabFlash = document.getElementById('tabFlash');
+  var tabMatch = document.getElementById('tabMatch');
+  var tabQuiz = document.getElementById('tabQuiz');
+  var learnView = document.getElementById('learnView');
+  var flashView = document.getElementById('flashView');
+  var matchView = document.getElementById('matchView');
+  var quizView = document.getElementById('quizView');
+
+  var matchChips = document.getElementById('matchChips');
+  var matchOpChips = document.getElementById('matchOpChips');
+  var matchChipsHint = document.getElementById('matchChipsHint');
+  var matchLevelHint = document.getElementById('matchLevelHint');
+  var matchLevelChips = document.getElementById('matchLevelChips');
+  var startMatchBtn = document.getElementById('startMatchBtn');
+  var matchEmptyHint = document.getElementById('matchEmptyHint');
+  var matchSetup = document.getElementById('matchSetup');
+  var matchPlay = document.getElementById('matchPlay');
+  var matchResult = document.getElementById('matchResult');
+  var matchDoneVal = document.getElementById('matchDoneVal');
+  var matchMissVal = document.getElementById('matchMissVal');
+  var matchLeftCol = document.getElementById('matchLeftCol');
+  var matchRightCol = document.getElementById('matchRightCol');
+  var matchResultTrophy = document.getElementById('matchResultTrophy');
+  var matchResultTitle = document.getElementById('matchResultTitle');
+  var matchResultDesc = document.getElementById('matchResultDesc');
+  var matchBackBtn = document.getElementById('matchBackBtn');
+  var matchRetryBtn = document.getElementById('matchRetryBtn');
+
+  var flashChips = document.getElementById('flashChips');
+  var flashOpChips = document.getElementById('flashOpChips');
+  var flashChipsHint = document.getElementById('flashChipsHint');
+  var flashLevelHint = document.getElementById('flashLevelHint');
+  var flashLevelChips = document.getElementById('flashLevelChips');
+  var flashProgress = document.getElementById('flashProgress');
+  var flashCard = document.getElementById('flashCard');
+  var flashFront = document.getElementById('flashFront');
+  var flashBack = document.getElementById('flashBack');
+  var flashPrevBtn = document.getElementById('flashPrevBtn');
+  var flashNextBtn = document.getElementById('flashNextBtn');
+  var flashShuffleBtn = document.getElementById('flashShuffleBtn');
+
+  var learnChips = document.getElementById('learnChips');
+  var learnOpChips = document.getElementById('learnOpChips');
+  var learnLevelHint = document.getElementById('learnLevelHint');
+  var learnLevelChips = document.getElementById('learnLevelChips');
+  var learnHeadingN = document.getElementById('learnHeadingN');
+  var tableGrid = document.getElementById('tableGrid');
+
+  var quizChips = document.getElementById('quizChips');
+  var quizOpChips = document.getElementById('quizOpChips');
+  var quizChipsHint = document.getElementById('quizChipsHint');
+  var quizLevelHint = document.getElementById('quizLevelHint');
+  var quizLevelChips = document.getElementById('quizLevelChips');
+  var startQuizBtn = document.getElementById('startQuizBtn');
+  var quizEmptyHint = document.getElementById('quizEmptyHint');
+  var quizSetup = document.getElementById('quizSetup');
+  var quizPlay = document.getElementById('quizPlay');
+  var quizResult = document.getElementById('quizResult');
+
+  var progressDots = document.getElementById('progressDots');
+  var scoreVal = document.getElementById('scoreVal');
+  var streakVal = document.getElementById('streakVal');
+  var quizMissVal = document.getElementById('quizMissVal');
+  var questionText = document.getElementById('questionText');
+  var answersGrid = document.getElementById('answersGrid');
+  var feedbackBanner = document.getElementById('feedbackBanner');
+  var fbIcon = document.getElementById('fbIcon');
+  var fbText = document.getElementById('fbText');
+
+  var resultStars = document.getElementById('resultStars');
+  var resultTitle = document.getElementById('resultTitle');
+  var resultDesc = document.getElementById('resultDesc');
+  var bestLine = document.getElementById('bestLine');
+  var backLearnBtn = document.getElementById('backLearnBtn');
+  var retryBtn = document.getElementById('retryBtn');
+
+  // ---------- shared: level chips & multi-select op chips ----------
+  function renderLevelChips(container, hintEl, show, onPick){
+    container.hidden = !show;
+    hintEl.hidden = !show;
+    if(!show) return;
+    container.innerHTML='';
+    LEVELS.forEach(function(lv){
+      var b=document.createElement('button');
+      b.className='level-chip'+(state.level===lv?' active':'');
+      b.textContent = '1–'+lv;
+      b.addEventListener('click', function(){
+        state.level=lv;
+        onPick();
+      });
+      container.appendChild(b);
+    });
+  }
+
+  function renderOpChipsMulti(container, selectedArr, onToggle){
+    container.innerHTML='';
+    OPS.forEach(function(op){
+      var active = selectedArr.indexOf(op.key)!==-1;
+      var b=document.createElement('button');
+      b.className='op-chip'+(active?' active':'');
+      b.textContent=op.label;
+      b.addEventListener('click', function(){
+        var idx=selectedArr.indexOf(op.key);
+        if(idx===-1){ selectedArr.push(op.key); }
+        else if(selectedArr.length>1){ selectedArr.splice(idx,1); } // keep at least 1 op
+        onToggle();
+      });
+      container.appendChild(b);
+    });
+  }
+
+  function renderOpChipsSingle(container, selectedKey, onPick){
+    container.innerHTML='';
+    OPS.forEach(function(op){
+      var b=document.createElement('button');
+      b.className='op-chip'+(selectedKey===op.key?' active':'');
+      b.textContent=op.label;
+      b.addEventListener('click', function(){ onPick(op.key); });
+      container.appendChild(b);
+    });
+  }
+
+  function opLabelSymbol(opType){
+    return opType==='mul' ? '×' : opType==='div' ? ':' : opType==='add' ? '+' : '−';
+  }
+
+  function makeGenericQuestion(opType, numberPool, level){
+    var a,b,answer,text;
+    if(opType==='mul'){
+      var maxFactor=Math.max(10, level);
+      var n=pick(numberPool); a=n; b=randInt(1,maxFactor); answer=a*b;
+      text=a+' × '+b+' = ?';
+    } else if(opType==='div'){
+      var maxFactor2=Math.max(10, level);
+      var n2=pick(numberPool); b=n2; var k=randInt(1,maxFactor2); a=n2*k; answer=k;
+      text=a+' : '+b+' = ?';
+    } else if(opType==='add'){
+      a=randInt(0,level); b=randInt(0,level); answer=a+b;
+      text=a+' + '+b+' = ?';
+    } else { // sub
+      a=randInt(0,level); b=randInt(0,a); answer=a-b;
+      text=a+' − '+b+' = ?';
+    }
+    return {opType:opType, a:a, b:b, answer:answer, text:text};
+  }
+
+  function makeDistractors(opType, answer, level){
+    var options=[answer];
+    if(opType==='div'){
+      var maxK = Math.max(10, level);
+      if(maxK<=20){
+        var pool10=[]; for(var v=1;v<=maxK;v++){ if(v!==answer) pool10.push(v); }
+        while(options.length<4 && pool10.length){
+          var idx=randInt(0,pool10.length-1);
+          options.push(pool10.splice(idx,1)[0]);
+        }
+      } else {
+        var deltaPoolD=[1,2,3,4,5,-1,-2,-3,-4,-5];
+        var triesD=0;
+        while(options.length<4 && triesD<60){
+          triesD++;
+          var candD=answer+pick(deltaPoolD);
+          if(candD>=1 && candD<=maxK && options.indexOf(candD)===-1){ options.push(candD); }
+        }
+        var fvD=1;
+        while(options.length<4 && fvD<=maxK){
+          if(options.indexOf(fvD)===-1){ options.push(fvD); }
+          fvD++;
+        }
+      }
+    } else {
+      var magnitude = Math.max(10, Math.abs(answer));
+      var deltaBase = [1,2,3,5,7,11];
+      var scale = Math.max(1, Math.round(magnitude/15));
+      var deltaPool=[];
+      deltaBase.forEach(function(d){ deltaPool.push(d*scale); deltaPool.push(-d*scale); });
+      var tries=0;
+      while(options.length<4 && tries<60){
+        tries++;
+        var delta=pick(deltaPool);
+        var cand=answer+delta;
+        if(cand>=0 && options.indexOf(cand)===-1){ options.push(cand); }
+      }
+      var fv=0;
+      while(options.length<4){
+        if(options.indexOf(fv)===-1){ options.push(fv); }
+        fv++;
+      }
+    }
+    for(var i=options.length-1;i>0;i--){
+      var j=randInt(0,i);
+      var tmp=options[i]; options[i]=options[j]; options[j]=tmp;
+    }
+    return options;
+  }
+
+  // ---------- render: tabs ----------
+  function renderTabs(){
+    tabLearn.classList.toggle('active', state.mode==='learn');
+    tabFlash.classList.toggle('active', state.mode==='flash');
+    tabMatch.classList.toggle('active', state.mode==='match');
+    tabQuiz.classList.toggle('active', state.mode==='quiz');
+    learnView.hidden = state.mode!=='learn';
+    flashView.hidden = state.mode!=='flash';
+    matchView.hidden = state.mode!=='match';
+    quizView.hidden = state.mode!=='quiz';
+  }
+  tabLearn.addEventListener('click', function(){ state.mode='learn'; renderTabs(); });
+  tabFlash.addEventListener('click', function(){ state.mode='flash'; renderTabs(); renderFlashCard(); });
+  tabMatch.addEventListener('click', function(){ state.mode='match'; renderTabs(); resetMatchToSetup(); });
+  tabQuiz.addEventListener('click', function(){ state.mode='quiz'; renderTabs(); resetQuizToSetup(); });
+
+  // ---------- render: learn chips (single select) ----------
+  function renderLearnChips(){
+    learnChips.innerHTML='';
+    NUMBERS.forEach(function(n){
+      var b=document.createElement('button');
+      b.className='chip'+(state.learnN===n?' selected':'');
+      b.textContent=n;
+      b.style.borderColor=chipColor(n);
+      if(state.learnN===n){ b.style.background=chipColor(n); }
+      b.addEventListener('click', function(){
+        state.learnN=n;
+        renderLearnChips();
+        renderTable();
+      });
+      learnChips.appendChild(b);
+    });
+  }
+
+  function renderTable(){
+    renderOpChipsSingle(learnOpChips, state.learnOp, function(key){
+      state.learnOp=key;
+      renderTable();
+    });
+    renderLevelChips(learnLevelChips, learnLevelHint, true, function(){
+      renderTable();
+    });
+    var step = Math.max(1, Math.round(state.level/10));
+    learnHeadingN.textContent=state.learnN;
+    learnHeadingN.style.color=chipColor(state.learnN);
+    tableGrid.innerHTML='';
+    var n=state.learnN;
+    for(var i=1;i<=10;i++){
+      var row=document.createElement('div');
+      row.className='table-row';
+      if(state.learnOp==='mul'){
+        var factor=i*step;
+        var product=n*factor;
+        row.innerHTML = n+' <span class="eq">×</span> '+factor+' <span class="eq">=</span> <span class="res">'+product+'</span>';
+      } else if(state.learnOp==='div'){
+        var factor2=i*step;
+        var big=n*factor2;
+        row.innerHTML = big+' <span class="eq">:</span> '+n+' <span class="eq">=</span> <span class="res">'+factor2+'</span>';
+      } else if(state.learnOp==='add'){
+        var addend=i*step;
+        var sum=n+addend;
+        row.innerHTML = n+' <span class="eq">+</span> '+addend+' <span class="eq">=</span> <span class="res">'+sum+'</span>';
+      } else { // sub
+        var addend2=i*step;
+        var big2=n+addend2;
+        row.innerHTML = big2+' <span class="eq">−</span> '+n+' <span class="eq">=</span> <span class="res">'+addend2+'</span>';
+      }
+      tableGrid.appendChild(row);
+    }
+  }
+
+  // ---------- render: flash chips (single select) ----------
+  function renderFlashChips(){
+    flashChips.innerHTML='';
+    NUMBERS.forEach(function(n){
+      var b=document.createElement('button');
+      b.className='chip'+(state.flashN===n?' selected':'');
+      b.textContent=n;
+      b.style.borderColor=chipColor(n);
+      if(state.flashN===n){ b.style.background=chipColor(n); }
+      b.addEventListener('click', function(){
+        state.flashN=n;
+        renderFlashChips();
+        shuffleFlash(false);
+      });
+      flashChips.appendChild(b);
+    });
+  }
+
+  function renderFlashSelectors(){
+    renderOpChipsSingle(flashOpChips, state.flashOp, function(key){
+      state.flashOp=key;
+      renderFlashSelectors();
+      shuffleFlash();
+    });
+    var useTable = state.flashOp==='mul' || state.flashOp==='div';
+    flashChips.hidden = !useTable;
+    flashChipsHint.hidden = !useTable;
+    if(useTable) renderFlashChips();
+    renderLevelChips(flashLevelChips, flashLevelHint, true, function(){
+      renderFlashSelectors();
+      shuffleFlash();
+    });
+  }
+
+  var OP_NAMES = {mul:'Phép nhân', div:'Phép chia', add:'Phép cộng', sub:'Phép trừ'};
+
+  function shuffleFlash(){
+    var op=state.flashOp;
+    var cards=[];
+    if(op==='mul' || op==='div'){
+      var order=[1,2,3,4,5,6,7,8,9,10];
+      for(var i=order.length-1;i>0;i--){
+        var j=randInt(0,i);
+        var tmp=order[i]; order[i]=order[j]; order[j]=tmp;
+      }
+      var n=state.flashN;
+      var step=Math.max(1, Math.round(state.level/10));
+      order.forEach(function(k){
+        var kk=k*step;
+        if(op==='mul'){ cards.push({text:n+' × '+kk+' = ?', answer:String(n*kk)}); }
+        else { var big=n*kk; cards.push({text:big+' : '+n+' = ?', answer:String(kk)}); }
+      });
+    } else {
+      var seenFlash={};
+      for(var c=0;c<10;c++){
+        var q, ftries=0;
+        do { q=makeGenericQuestion(op, NUMBERS, state.level); ftries++; }
+        while(seenFlash[q.text] && ftries<60);
+        seenFlash[q.text]=true;
+        cards.push({text:q.text, answer:String(q.answer)});
+      }
+    }
+    flash.cards=cards;
+    flash.pos=0;
+    flash.flipped=false;
+    renderFlashCard();
+  }
+
+  function renderFlashCard(){
+    var card=flash.cards[flash.pos];
+    flashFront.innerHTML = card.text + '<small>'+OP_NAMES[state.flashOp]+' · bấm để lật</small>';
+    flashBack.textContent = card.answer;
+    flash.flipped=false;
+    flashCard.classList.remove('flipped');
+    flashProgress.textContent = 'Thẻ '+(flash.pos+1)+'/10';
+  }
+
+  flashCard.addEventListener('click', function(){
+    flash.flipped=!flash.flipped;
+    flashCard.classList.toggle('flipped', flash.flipped);
+  });
+  flashPrevBtn.addEventListener('click', function(){
+    var len=flash.cards.length;
+    flash.pos = (flash.pos-1+len)%len;
+    renderFlashCard();
+  });
+  flashNextBtn.addEventListener('click', function(){
+    var len=flash.cards.length;
+    flash.pos = (flash.pos+1)%len;
+    renderFlashCard();
+  });
+  flashShuffleBtn.addEventListener('click', function(){ shuffleFlash(); });
+
+  // ---------- matching game ----------
+  var matchGame = null;
+
+  function renderMatchChips(){
+    matchChips.innerHTML='';
+    NUMBERS.forEach(function(n){
+      var selected = state.matchSel.indexOf(n)!==-1;
+      var b=document.createElement('button');
+      b.className='chip'+(selected?' selected':'');
+      b.textContent=n;
+      b.style.borderColor=chipColor(n);
+      if(selected){ b.style.background=chipColor(n); }
+      b.addEventListener('click', function(){
+        var idx=state.matchSel.indexOf(n);
+        if(idx===-1){ state.matchSel.push(n); }
+        else { state.matchSel.splice(idx,1); }
+        renderMatchSelectors();
+      });
+      matchChips.appendChild(b);
+    });
+    var allSelected = state.matchSel.length===NUMBERS.length;
+    var allBtn=document.createElement('button');
+    allBtn.className='chip chip-all'+(allSelected?' selected':'');
+    allBtn.textContent='🎲 Tất cả';
+    allBtn.style.borderColor='var(--secondary)';
+    if(allSelected){ allBtn.style.background='var(--secondary)'; }
+    allBtn.addEventListener('click', function(){
+      state.matchSel = allSelected ? [] : NUMBERS.slice();
+      renderMatchSelectors();
+    });
+    matchChips.appendChild(allBtn);
+  }
+
+  function renderMatchSelectors(){
+    renderOpChipsMulti(matchOpChips, state.matchOps, renderMatchSelectors);
+    var useTable = opsUseTable(state.matchOps);
+    var useLevel = opsUseLevel(state.matchOps);
+    matchChips.hidden = !useTable;
+    matchChipsHint.hidden = !useTable;
+    if(useTable) renderMatchChips();
+    renderLevelChips(matchLevelChips, matchLevelHint, useLevel, renderMatchSelectors);
+
+    var noneSelected = useTable && state.matchSel.length===0;
+    startMatchBtn.disabled = noneSelected;
+    startMatchBtn.style.opacity = noneSelected ? 0.5 : 1;
+    matchEmptyHint.hidden = !noneSelected;
+  }
+
+  function resetMatchToSetup(){
+    matchSetup.hidden=false;
+    matchPlay.hidden=true;
+    matchResult.hidden=true;
+  }
+
+  function shuffleArr(arr){
+    for(var i=arr.length-1;i>0;i--){
+      var j=Math.floor(Math.random()*(i+1));
+      var tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp;
+    }
+    return arr;
+  }
+
+  function buildMatchPairs(pool, opsArr, level, count){
+    var candidates=[];
+    var maxFactorM = Math.max(10, level);
+    if(opsArr.indexOf('mul')!==-1){
+      pool.forEach(function(n){ for(var i=1;i<=maxFactorM;i++){ candidates.push({text:n+' × '+i, value:n*i}); } });
+    }
+    if(opsArr.indexOf('div')!==-1){
+      pool.forEach(function(n){ for(var i=1;i<=maxFactorM;i++){ candidates.push({text:(n*i)+' : '+n, value:i}); } });
+    }
+    if(opsArr.indexOf('add')!==-1){
+      for(var a=0;a<80;a++){ var q=makeGenericQuestion('add', pool, level); candidates.push({text:q.text, value:q.answer}); }
+    }
+    if(opsArr.indexOf('sub')!==-1){
+      for(var s=0;s<80;s++){ var q2=makeGenericQuestion('sub', pool, level); candidates.push({text:q2.text, value:q2.answer}); }
+    }
+    shuffleArr(candidates);
+    var seen={}; var chosen=[];
+    for(var k=0;k<candidates.length && chosen.length<count;k++){
+      var c=candidates[k];
+      if(!seen[c.text]){ seen[c.text]=true; chosen.push(c); }
+    }
+    return chosen;
+  }
+
+  function startMatch(){
+    var useTable = opsUseTable(state.matchOps);
+    if(useTable && state.matchSel.length===0) return;
+    var count=10;
+    var pairs = buildMatchPairs(state.matchSel.length?state.matchSel:NUMBERS, state.matchOps, state.level, count);
+    if(pairs.length<2){ pairs = buildMatchPairs(NUMBERS, state.matchOps, state.level, count); }
+
+    var leftCards = pairs.map(function(p,idx){ return {uid:'L'+idx, text:p.text, value:p.value}; });
+    var rightCards = pairs.map(function(p,idx){ return {uid:'R'+idx, value:p.value}; });
+    shuffleArr(leftCards);
+    shuffleArr(rightCards);
+
+    matchGame = {
+      left:leftCards,
+      right:rightCards,
+      matchedLeft:{},
+      matchedRight:{},
+      selected:null,
+      matched:0,
+      total:leftCards.length,
+      mistakes:0,
+      locked:false
+    };
+    matchSetup.hidden=true;
+    matchResult.hidden=true;
+    matchPlay.hidden=false;
+    renderMatchBoard();
+  }
+  startMatchBtn.addEventListener('click', startMatch);
+
+  function renderMatchBoard(){
+    matchDoneVal.textContent = matchGame.matched;
+    matchMissVal.textContent = matchGame.mistakes;
+    matchLeftCol.innerHTML='';
+    matchRightCol.innerHTML='';
+    matchGame.left.forEach(function(card){
+      var b=document.createElement('button');
+      b.className='match-card';
+      b.textContent=card.text;
+      if(matchGame.matchedLeft[card.uid]){ b.classList.add('matched'); b.disabled=true; }
+      else if(matchGame.selected && matchGame.selected.side==='left' && matchGame.selected.uid===card.uid){ b.classList.add('selected'); }
+      b.addEventListener('click', function(){ handleMatchClick('left', card); });
+      matchLeftCol.appendChild(b);
+    });
+    matchGame.right.forEach(function(card){
+      var b=document.createElement('button');
+      b.className='match-card';
+      b.textContent=card.value;
+      if(matchGame.matchedRight[card.uid]){ b.classList.add('matched'); b.disabled=true; }
+      else if(matchGame.selected && matchGame.selected.side==='right' && matchGame.selected.uid===card.uid){ b.classList.add('selected'); }
+      b.addEventListener('click', function(){ handleMatchClick('right', card); });
+      matchRightCol.appendChild(b);
+    });
+  }
+
+  function handleMatchClick(side, card){
+    if(matchGame.locked) return;
+    var already = side==='left' ? matchGame.matchedLeft[card.uid] : matchGame.matchedRight[card.uid];
+    if(already) return;
+
+    if(!matchGame.selected){
+      matchGame.selected = {side:side, uid:card.uid, value:card.value};
+      renderMatchBoard();
+      return;
+    }
+    if(matchGame.selected.side===side){
+      matchGame.selected = {side:side, uid:card.uid, value:card.value};
+      renderMatchBoard();
+      return;
+    }
+    // opposite side: attempt match
+    var first = matchGame.selected;
+    var isCorrect = first.value===card.value;
+    matchGame.locked=true;
+    var firstEl = (first.side==='left'?matchLeftCol:matchRightCol).querySelector('.selected');
+    var secondEl = (side==='left'?matchLeftCol:matchRightCol).children[
+      (side==='left'?matchGame.left:matchGame.right).findIndex(function(c){ return c.uid===card.uid; })
+    ];
+    if(isCorrect){
+      matchGame.matchedLeft[first.side==='left'?first.uid:card.uid]=true;
+      matchGame.matchedRight[first.side==='right'?first.uid:card.uid]=true;
+      matchGame.matched++;
+      matchGame.selected=null;
+      matchGame.locked=false;
+      playCorrectSound();
+      renderMatchBoard();
+      if(matchGame.matched>=matchGame.total){ setTimeout(finishMatch, 350); }
+    } else {
+      matchGame.mistakes++;
+      playWrongSound();
+      if(firstEl) firstEl.classList.add('wrong');
+      if(secondEl) secondEl.classList.add('wrong');
+      matchMissVal.textContent = matchGame.mistakes;
+      setTimeout(function(){
+        matchGame.selected=null;
+        matchGame.locked=false;
+        renderMatchBoard();
+      }, 550);
+    }
+  }
+
+  function finishMatch(){
+    matchPlay.hidden=true;
+    matchResult.hidden=false;
+    var mistakes=matchGame.mistakes;
+    var tier = mistakes===0 ? 'gold' : mistakes<=2 ? 'silver' : mistakes<=4 ? 'bronze' : 'none';
+    var trophyEmoji = tier==='gold' ? '🥇' : tier==='silver' ? '🥈' : tier==='bronze' ? '🥉' : '🦊';
+    matchResultTrophy.textContent = trophyEmoji;
+    matchResultTrophy.classList.remove('trophy-pop');
+    void matchResultTrophy.offsetWidth;
+    matchResultTrophy.classList.add('trophy-pop');
+
+    if(tier==='gold'){ matchResultTitle.textContent='Cúp Vàng rực rỡ! 🏆'; }
+    else if(tier==='silver'){ matchResultTitle.textContent='Cúp Bạc lấp lánh! ✨'; }
+    else if(tier==='bronze'){ matchResultTitle.textContent='Cúp Đồng đáng yêu! 🌟'; }
+    else { matchResultTitle.textContent='Cố lên bạn nhỏ nhé! 🌱'; }
+    matchResultDesc.textContent = 'Bạn nhỏ đã nối đúng '+matchGame.total+'/'+matchGame.total+' cặp, sai '+mistakes+' lần';
+    playTrophySound(tier);
+  }
+
+  matchRetryBtn.addEventListener('click', startMatch);
+  matchBackBtn.addEventListener('click', function(){
+    state.mode='learn';
+    renderTabs();
+    resetMatchToSetup();
+  });
+
+  // ---------- render: quiz chips (multi select, plus "Tất cả") ----------
+  function renderQuizChips(){
+    quizChips.innerHTML='';
+    NUMBERS.forEach(function(n){
+      var selected = state.quizSel.indexOf(n)!==-1;
+      var b=document.createElement('button');
+      b.className='chip'+(selected?' selected':'');
+      b.textContent=n;
+      b.style.borderColor=chipColor(n);
+      if(selected){ b.style.background=chipColor(n); }
+      b.addEventListener('click', function(){
+        var idx=state.quizSel.indexOf(n);
+        if(idx===-1){ state.quizSel.push(n); }
+        else { state.quizSel.splice(idx,1); }
+        renderQuizSelectors();
+      });
+      quizChips.appendChild(b);
+    });
+    var allSelected = state.quizSel.length===NUMBERS.length;
+    var allBtn=document.createElement('button');
+    allBtn.className='chip chip-all'+(allSelected?' selected':'');
+    allBtn.textContent='🎲 Tất cả';
+    allBtn.style.borderColor='var(--secondary)';
+    if(allSelected){ allBtn.style.background='var(--secondary)'; }
+    allBtn.addEventListener('click', function(){
+      state.quizSel = allSelected ? [] : NUMBERS.slice();
+      renderQuizSelectors();
+    });
+    quizChips.appendChild(allBtn);
+  }
+
+  function renderQuizSelectors(){
+    renderOpChipsMulti(quizOpChips, state.quizOps, renderQuizSelectors);
+    var useTable = opsUseTable(state.quizOps);
+    var useLevel = opsUseLevel(state.quizOps);
+    quizChips.hidden = !useTable;
+    quizChipsHint.hidden = !useTable;
+    if(useTable) renderQuizChips();
+    renderLevelChips(quizLevelChips, quizLevelHint, useLevel, renderQuizSelectors);
+
+    var noneSelected = useTable && state.quizSel.length===0;
+    startQuizBtn.disabled = noneSelected;
+    startQuizBtn.style.opacity = noneSelected ? 0.5 : 1;
+    quizEmptyHint.hidden = !noneSelected;
+  }
+
+  function currentQuizPool(){
+    return state.quizSel.length ? state.quizSel.slice() : NUMBERS.slice();
+  }
+
+  function resetQuizToSetup(){
+    quizSetup.hidden=false;
+    quizPlay.hidden=true;
+    quizResult.hidden=true;
+  }
+
+  // ---------- quiz logic ----------
+  function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function pick(arr){ return arr[randInt(0,arr.length-1)]; }
+
+  function makeQuestion(pool, opsArr, level){
+    var opType = pick(opsArr);
+    var q = makeGenericQuestion(opType, pool, level);
+    var options = makeDistractors(opType, q.answer, level);
+    return { text:q.text, answer:q.answer, options:options };
+  }
+
+  function startQuiz(){
+    var useTable = opsUseTable(state.quizOps);
+    if(useTable && state.quizSel.length===0) return;
+    quiz = {
+      pool: currentQuizPool(),
+      opsArr: state.quizOps.slice(),
+      level: state.level,
+      total: 10,
+      index: 0,
+      score: 0,
+      streak: 0,
+      mistakes: 0,
+      history: [], // 'done' | 'miss' per question
+      current: null,
+      locked: false,
+      usedTexts: {}
+    };
+    quizSetup.hidden=true;
+    quizResult.hidden=true;
+    quizPlay.hidden=false;
+    nextQuestion();
+  }
+  startQuizBtn.addEventListener('click', startQuiz);
+
+  function renderProgress(){
+    progressDots.innerHTML='';
+    for(var i=0;i<quiz.total;i++){
+      var d=document.createElement('div');
+      d.className='dot';
+      if(quiz.history[i]==='done') d.classList.add('done');
+      else if(quiz.history[i]==='miss') d.classList.add('miss');
+      progressDots.appendChild(d);
+    }
+  }
+
+  function nextQuestion(){
+    if(quiz.index>=quiz.total){ finishQuiz(); return; }
+    var q, tries=0;
+    do {
+      q = makeQuestion(quiz.pool, quiz.opsArr, quiz.level);
+      tries++;
+    } while(quiz.usedTexts[q.text] && tries<60);
+    quiz.usedTexts[q.text] = true;
+    quiz.current = q;
+    quiz.current.retried = false;
+    quiz.locked=false;
+    scoreVal.textContent = quiz.score;
+    streakVal.textContent = quiz.streak;
+    quizMissVal.textContent = quiz.mistakes;
+    questionText.textContent = quiz.current.text;
+    feedbackBanner.hidden = true;
+    feedbackBanner.classList.remove('correct','wrong');
+    renderProgress();
+    answersGrid.innerHTML='';
+    quiz.current.options.forEach(function(opt){
+      var btn=document.createElement('button');
+      btn.className='answer-btn';
+      btn.textContent=opt;
+      btn.addEventListener('click', function(){ handleAnswer(opt, btn); });
+      answersGrid.appendChild(btn);
+    });
+  }
+
+  function handleAnswer(opt, btn){
+    if(quiz.locked || btn.disabled) return;
+    var correct = opt===quiz.current.answer;
+
+    if(correct){
+      quiz.locked=true;
+      var allBtns = answersGrid.querySelectorAll('.answer-btn');
+      allBtns.forEach(function(b){
+        b.disabled=true;
+        if(parseInt(b.textContent,10)===quiz.current.answer){ b.classList.add('correct'); }
+      });
+      quiz.score++;
+      quiz.streak++;
+      quiz.history[quiz.index]='done';
+      playCorrectSound();
+      fbIcon.textContent = pick(CORRECT_ICONS);
+      fbText.textContent = pick(CORRECT_PHRASES);
+      feedbackBanner.classList.remove('wrong');
+      feedbackBanner.classList.add('correct');
+      feedbackBanner.hidden=false;
+      quiz.index++;
+      scoreVal.textContent = quiz.score;
+      streakVal.textContent = quiz.streak;
+      renderProgress();
+      setTimeout(nextQuestion, 1200);
+    } else {
+      // Sai: cho làm lại câu này, không chuyển câu khác
+      btn.disabled = true;
+      btn.classList.add('wrong');
+      if(!quiz.current.retried){
+        quiz.current.retried = true;
+        quiz.streak = 0;
+        quiz.mistakes++;
+        quiz.history[quiz.index] = 'miss';
+        streakVal.textContent = quiz.streak;
+        quizMissVal.textContent = quiz.mistakes;
+        renderProgress();
+      }
+      playWrongSound();
+      fbIcon.textContent = pick(WRONG_ICONS);
+      fbText.textContent = pick(WRONG_PHRASES);
+      feedbackBanner.classList.remove('correct');
+      feedbackBanner.classList.add('wrong');
+      feedbackBanner.hidden=false;
+    }
+  }
+
+  function finishQuiz(){
+    quizPlay.hidden=true;
+    quizResult.hidden=false;
+    var score=quiz.score;
+    var mistakes=quiz.mistakes;
+    var bestM=getBestMistakes();
+    if(bestM===null || mistakes<bestM){ bestM=mistakes; setBestMistakes(bestM); }
+
+    // Cúp tính theo số lần trả lời sai trong cả vòng (trả lời đúng ngay từ đầu mới không tính sai),
+    // không tính theo điểm cuối cùng vì bạn nhỏ được làm lại tới khi đúng.
+    var tier = mistakes===0 ? 'gold' : mistakes<=2 ? 'silver' : mistakes<=5 ? 'bronze' : 'none';
+    var trophyEmoji = tier==='gold' ? '🥇' : tier==='silver' ? '🥈' : tier==='bronze' ? '🥉' : '🦊';
+    resultStars.textContent = trophyEmoji;
+    resultStars.classList.remove('trophy-pop');
+    void resultStars.offsetWidth; // restart animation
+    resultStars.classList.add('trophy-pop');
+
+    if(tier==='gold'){ resultTitle.textContent='Cúp Vàng rực rỡ! 🏆'; }
+    else if(tier==='silver'){ resultTitle.textContent='Cúp Bạc lấp lánh! ✨'; }
+    else if(tier==='bronze'){ resultTitle.textContent='Cúp Đồng đáng yêu! 🌟'; }
+    else { resultTitle.textContent='Cố lên bạn nhỏ nhé! 🌱'; }
+
+    resultDesc.textContent = 'Bạn nhỏ trả lời đúng '+score+'/10 câu, sai '+mistakes+' lần';
+    bestLine.textContent = '🏆 Ít lỗi nhất từng đạt: '+bestM+' lần sai';
+    playTrophySound(tier);
+  }
+
+  retryBtn.addEventListener('click', startQuiz);
+  backLearnBtn.addEventListener('click', function(){
+    state.mode='learn';
+    renderTabs();
+    resetQuizToSetup();
+  });
+
+  // ---------- init ----------
+  renderTabs();
+  renderLearnChips();
+  renderTable();
+  renderFlashSelectors();
+  shuffleFlash();
+  renderMatchSelectors();
+  renderQuizSelectors();
+})();
+</script>
+</body>
+</html>
